@@ -6,6 +6,7 @@ const parser = data => {
         const [key, ...args] = v
           .replace(/\\\|/g, '|')
           .trim()
+          .replace(/^([^,\(\)]+)=>/, '($1) => ')
           .split('(')
         ;
         return [

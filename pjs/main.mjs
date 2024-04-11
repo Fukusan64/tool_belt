@@ -27,4 +27,3 @@ if (ALL_READ_MODE) {
     .on('line', (input) => setImmediate(() => processing(input)))
   ;
 }
-
