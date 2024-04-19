@@ -12,7 +12,7 @@ if (command === undefined) {
     '    -d [DELIMITER]: default "|>"',
     '',
     'example',
-    '    $ ls | pjs "(v) => v.length + \': \' + v"',
+    '    $ ls | pjs "v => v.length + \': \' + v"',
   ].forEach(v => console.error(v));
   process.exit(1);
 }
