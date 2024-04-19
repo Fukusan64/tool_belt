@@ -30,7 +30,7 @@ const hasKey = (key, data) => {
 const runner = ([key, args], data) => {
   if (hasKey(key, data)) {
     if (typeof data[key] === 'function') {
-      return runtime(`ctx.${key}${args ?? '()'}`, {ctx: data});
+      return runtime(`ctx["${key.replaceAll('"','\\"')}"]${args ?? '()'}`, {ctx: data});
     }
     return data[key];
   }
