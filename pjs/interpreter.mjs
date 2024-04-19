@@ -1,10 +1,9 @@
 import runtime, {exitCode} from './runtime.mjs';
-const parser = data => {
+const parser = (data, delimiter) => {
   return data
-    .split(/(?<!\\)\|/)
+    .split(delimiter)
     .map(v => {
         const [key, ...args] = v
-          .replace(/\\\|/g, '|')
           .trim()
           .replace(/^([^,\(\)]+)=>/, '($1) => ')
           .split('(')
@@ -45,9 +44,9 @@ const runner = ([key, args], data) => {
 };
 
 
-export default input => {
+export default (input, delimiter) => {
   return async inputData => {
-    const code = parser(input);
+    const code = parser(input, delimiter);
     let data = inputData;
 
     for (const c of code) {
