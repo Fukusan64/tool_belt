@@ -37,7 +37,10 @@ const runner = ([key, args], data) => {
 
   const value = runtime(key);
   if (typeof value === 'function') {
-    return value(data);
+    if (args === undefined) {
+      return value(data);
+    }
+    return runtime(`ctx${args}`, {ctx: value});
   }
 
   throw new Error(`Invalid command: {key: ${key}, args: ${args}}\n Current data: ${data}`);
