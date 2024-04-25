@@ -1,5 +1,6 @@
 #! /usr/bin/env zx
 import parser from './interpreter.mjs';
+import readline from 'node:readline'
 const ALL_READ_MODE = Object.keys(argv).some(v => v === 'a');
 const DELIMITER = argv.d;
 const command = argv._[0] ?? (argv.a === true ? undefined : argv.a);
@@ -24,7 +25,7 @@ if (ALL_READ_MODE) {
   for await (const chunk of process.stdin) input += chunk;
   processing(input);
 } else {
-  require('node:readline')
+  readline
     .createInterface({ input: process.stdin })
     .on('line', (input) => setImmediate(() => processing(input)))
   ;

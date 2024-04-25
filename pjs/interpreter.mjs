@@ -3,13 +3,13 @@ const parser = (data, delimiter) => {
   return data
     .split(delimiter)
     .map(v => {
-        const [key, ...args] = v
+        const [name, ...args] = v
           .trim()
           .replace(/^([^,\(\)]+)=>/, '($1) => ')
           .split('(')
         ;
         return [
-          key,
+          name,
           args.length !== 0 ? '(' + args.join('(') : undefined
         ].filter(v => v);
       }
@@ -17,33 +17,17 @@ const parser = (data, delimiter) => {
   ;
 };
 
-const hasKey = (key, data) => {
-  try {
-    if (Object.keys(data).includes(key)) return true;
-    if (data === Object(data)) return key in data;
-    return key in new data.constructor();
-  } catch {
-    return false;
-  }
-};
-
 const runner = ([key, args], data) => {
-  if (hasKey(key, data)) {
-    if (typeof data[key] === 'function') {
-      return runtime(`ctx["${key.replaceAll('"','\\"')}"]${args ?? '()'}`, {ctx: data});
-    }
-    return data[key];
-  }
-
   const value = runtime(key);
-  if (typeof value === 'function') {
+  if (typeof value !== 'function') throw new Error(`Invalid command: ${key ?? ''}${args ?? ''}\n Current data: ${data}`);
+  try {
     if (args === undefined) {
       return value(data);
     }
     return runtime(`ctx${args}`, {ctx: value});
+  } catch (e) {
+    throw new Error(`${e}\n\nInvalid command: ${key ?? ''}${args ?? ''}\nCurrent data: ${data}`);
   }
-
-  throw new Error(`Invalid command: {key: ${key}, args: ${args}}\n Current data: ${data}`);
 };
 
 
