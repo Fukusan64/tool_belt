@@ -1,7 +1,7 @@
 import * as utils from './utils.mjs';
 Object.assign(globalThis, utils);
 
-const q = () => exitCode;
 export const exitCode = Symbol('exitCode');
+const q = exitCode;
 
-export default (code, {ctx} = {ctx: undefined}) => eval(code);
+export default (code, {__internal__} = {__internal__: undefined}) => eval(code);

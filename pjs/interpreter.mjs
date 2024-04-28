@@ -1,46 +1,29 @@
 import runtime, {exitCode} from './runtime.mjs';
-const parser = (data, delimiter) => {
+const parser = (data, delimiter, topicReference) => {
   return data
     .split(delimiter)
-    .map(v => {
-        const [name, ...args] = v
-          .trim()
-          .replace(/^([^,\(\)]+)=>/, '($1) => ')
-          .split('(')
-        ;
-        return [
-          name,
-          args.length !== 0 ? '(' + args.join('(') : undefined
-        ].filter(v => v);
-      }
-    )
+    .map(v => v.replaceAll(topicReference, '__internal__'))
   ;
 };
 
-const runner = ([key, args], data) => {
-  const value = runtime(key);
-  if (typeof value !== 'function') throw new Error(`Invalid command: ${key ?? ''}${args ?? ''}\n Current data: ${data}`);
+const runner = (code, data) => {
   try {
-    if (args === undefined) {
-      return value(data);
-    }
-    return runtime(`ctx${args}`, {ctx: value});
+    return runtime(code, {__internal__: data});
   } catch (e) {
-    throw new Error(`${e}\n\nInvalid command: ${key ?? ''}${args ?? ''}\nCurrent data: ${data}`);
+    throw new Error(`${e}\n\nInvalid command: ${code}\nCurrent data: ${data}`);
   }
 };
 
 
-export default (input, delimiter) => {
+export default (input, delimiter, topicReference) => {
   return async inputData => {
-    const code = parser(input, delimiter);
+    const code = parser(input, delimiter, topicReference);
     let data = inputData;
 
     for (const c of code) {
       data = await runner(c, data);
       if (data === exitCode) return;
     }
-    
     console.log(data);
   }
 };
