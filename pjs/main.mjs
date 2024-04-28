@@ -39,8 +39,6 @@ if (IS_ALL_READ_MODE) {
   for await (const chunk of process.stdin) input += chunk;
   processing(input);
 } else {
-  readline
-    .createInterface({ input: process.stdin })
-    .on('line', (input) => setImmediate(() => processing(input)))
-  ;
+  const rl = readline.createInterface({ input: process.stdin })
+  for await (const line of rl) await processing(line);
 }
