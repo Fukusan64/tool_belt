@@ -4,8 +4,8 @@ import readline from 'node:readline';
 
 const IS_ALL_READ_MODE = Object.keys(argv).some(v => v === 'a');
 
-const DELIMITER = argv.d;
-const DEFAULT_DELIMITER = '|>';
+const PIPE_OPERATOR = argv.d;
+const DEFAULT_PIPE_OPERATOR = '|>';
 
 const TOPIC_REFERENCE = argv.t;
 const DEFAULT_TOPIC_REFERENCE = '@';
@@ -15,10 +15,10 @@ const command = argv._[0] ?? (argv.a === true ? undefined : argv.a);
 if (command === undefined) {
   const help = 
     [
-      'pjs [options] command',
+      'pjs [options] code',
       'options',
       '    -a                  : load all mode',
-      `    -d [DELIMITER]      : default "${DEFAULT_DELIMITER}"`,
+      `    -p [PIPE_OPERATOR]  : default "${DEFAULT_PIPE_OPERATOR}"`,
       `    -t [TOPIC_REFERENCE]: default "${DEFAULT_TOPIC_REFERENCE}"`,
       '',
       'example',
@@ -32,7 +32,7 @@ if (command === undefined) {
 
 const processing = parser(
   command.toString() ?? '',
-  DELIMITER ?? DEFAULT_DELIMITER,
+  PIPE_OPERATOR ?? DEFAULT_PIPE_OPERATOR,
   TOPIC_REFERENCE ?? DEFAULT_TOPIC_REFERENCE,
 );
 

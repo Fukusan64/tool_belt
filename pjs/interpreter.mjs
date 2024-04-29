@@ -1,6 +1,6 @@
 import runtime, {exitCode} from './runtime.mjs';
-const parser = (data, delimiter, topicReference) => {
-  return data
+const parser = (input, delimiter, topicReference) => {
+  return input
     .split(delimiter)
     .map(v => v.replaceAll(topicReference, '__internal__'))
   ;
@@ -24,6 +24,7 @@ export default (input, delimiter, topicReference) => {
       data = await runner(c, data);
       if (data === exitCode) return;
     }
+    
     console.log(data);
   }
 };
