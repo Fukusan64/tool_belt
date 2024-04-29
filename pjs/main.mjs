@@ -16,6 +16,7 @@ if (command === undefined) {
   const help = 
     [
       'pjs [options] code',
+      '',
       'options',
       '    -a                  : load all mode',
       `    -p [PIPE_OPERATOR]  : default "${DEFAULT_PIPE_OPERATOR}"`,

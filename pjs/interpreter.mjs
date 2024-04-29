@@ -14,7 +14,6 @@ const runner = (code, data) => {
   }
 };
 
-
 export default (input, delimiter, topicReference) => {
   return async inputData => {
     const code = parser(input, delimiter, topicReference);
