@@ -4,4 +4,4 @@ Object.assign(globalThis, utils);
 export const exitCode = Symbol('exitCode');
 const q = exitCode;
 
-export default (code, {__internal__} = {__internal__: undefined}) => eval(code);
+export default (code, {__internal_topic_reference__} = {__internal_topic_reference__: undefined}) => eval(code);

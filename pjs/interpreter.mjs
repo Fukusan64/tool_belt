@@ -2,15 +2,24 @@ import runtime, {exitCode} from './runtime.mjs';
 const parser = (input, delimiter, topicReference) => {
   return input
     .split(delimiter)
-    .map(v => v.replaceAll(topicReference, '__internal__'))
+    .map(v => v.replaceAll(topicReference, '__internal_topic_reference__'))
   ;
 };
 
-const runner = (code, data) => {
+const runner = (code, data, topicReference) => {
   try {
-    return runtime(code, {__internal__: data});
+    return runtime(code, {__internal_topic_reference__: data});
   } catch (e) {
-    throw new Error(`${e}\n\nInvalid command: ${code}\nCurrent data: ${data}`);
+    throw new Error(`${
+      e
+    }\n\nInvalid command: ${
+      code.replaceAll(
+        '__internal_topic_reference__',
+        topicReference
+      )
+    }\nCurrent data: ${
+      data
+    }`);
   }
 };
 
@@ -20,7 +29,7 @@ export default (input, delimiter, topicReference) => {
     let data = inputData;
 
     for (const c of code) {
-      data = await runner(c, data);
+      data = await runner(c, data, topicReference);
       if (data === exitCode) return;
     }
     
