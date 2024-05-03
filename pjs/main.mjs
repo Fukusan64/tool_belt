@@ -32,7 +32,7 @@ if (command === undefined) {
 }
 
 const processing = parser(
-  command.toString() ?? '',
+  command ?? '',
   PIPE_OPERATOR ?? DEFAULT_PIPE_OPERATOR,
   TOPIC_REFERENCE ?? DEFAULT_TOPIC_REFERENCE,
 );
